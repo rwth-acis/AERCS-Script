@@ -94,4 +94,4 @@ from aercs_tt.paper dp
       inner join aercs_tt.author da
                   on am.author_id = da.id
 group by dp.id,cp.id;
-                  
+                   
