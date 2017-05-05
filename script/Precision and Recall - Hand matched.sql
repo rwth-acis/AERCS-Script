@@ -3,7 +3,6 @@
 SELECT COUNT(*)
 FROM "CITESEER"."HAND_MATCHED_DATASET"  pm
     INNER JOIN (
-                
                 SELECT *
                 FROM RESULT_MATCH80
                 WHERE (AUTHOR_JWS >= 75 OR AUTHOR_JWS_LEFT >=75 )
@@ -15,9 +14,7 @@ FROM "CITESEER"."HAND_MATCHED_DATASET"  pm
                       AND TITLE_JWS >= 95
                 ) presult
               ON presult.dblp_id = pm.dblp_id and presult.citeseer_id = pm.citeseer_id
---793
-
-
+--812
 
 
 --True positives + False positives 
@@ -33,9 +30,11 @@ FROM (
   WHERE (AUTHOR_JWS >= 60 OR AUTHOR_JWS_LEFT >=60 )
         AND TITLE_JWS >= 95
  ) presult;
---851
 
---precision = 793/851 = 0.9318
+
+--872
+
+--precision = 812/872 = 0.9312
 
 
 
@@ -44,7 +43,7 @@ SELECT COUNT(*)
 FROM "CITESEER"."HAND_MATCHED_DATASET" pm
 --1038
 
---recall = 793/1038 = 0.7640
+--recall = 812/1038 = 0.7823
 
 /*------------------------------------------------------------------------------------------------------*/
 
