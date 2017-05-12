@@ -1,26 +1,24 @@
+CREATE TABLE "CITESEER"."RESULT_MATCH80" 
+   (	"DBLP_ID" NUMBER, 
+	"CITESEER_ID" NUMBER, 
+	"DBLP_TITLE" VARCHAR2(4000 BYTE), 
+	"CITESEER_TITLE" VARCHAR2(4000 BYTE), 
+	"TITLE_JWS" NUMBER DEFAULT 0, 
+	"CITESEER_AUTHOR" VARCHAR2(4000 BYTE) NULL, 
+	"CITESEER_AUTHOR_LEFT" VARCHAR2(4000 BYTE) NULL, 
+	"DBLP_AUTHOR" VARCHAR2(4000 BYTE), 
+	"AUTHOR_JWS" NUMBER DEFAULT 0, 
+	"AUTHOR_JWS_LEFT" NUMBER DEFAULT 0
+   );
+
+
 --Join the papers that have a similarity higher than 80
-CREATE TABLE RESULT_MATCH80 as
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
-FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
-WHERE  dp.ID = dam.MEDIA_ID
-       AND dam.AUTHOR_ID = da.ID
-       AND cp.ID = cap.PAPER_ID
-       AND cap.AUTHOR_ID = ca.ID
-       AND ca.ID in (4159371,6581334,7394843,7420402,7648311,8201782,9356057,9276753,9334938)
-       AND da.ID in (3287)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
-       
---drop table RESULT_MATCH80
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
-SELECT dp.ID AS DBLP_ID,
-       cp.ID AS CITESEER_ID,
-       dp.TITLE AS DBLP_TITLE,
-       cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -28,14 +26,30 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (5711455,4240955,10310122,10039660,8803411,9107729,9394812)
        AND da.ID in (727728)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
-       
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+
+
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
+WHERE  dp.ID = dam.MEDIA_ID
+       AND dam.AUTHOR_ID = da.ID
+       AND cp.ID = cap.PAPER_ID
+       AND cap.AUTHOR_ID = ca.ID
+       AND ca.ID in (5711455,4240955,10310122,10039660,8803411,9107729,9394812)
+       AND da.ID in (727728)
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
+SELECT dp.ID AS DBLP_ID,
+       cp.ID AS CITESEER_ID,
+       dp.TITLE AS DBLP_TITLE,
+       cp.TITLE || '.' AS CITESEER_TITLE,
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -43,14 +57,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (5830005,5830008,5835992,4220617,4624183,9880287,6368325,7109959,7557847,7657399,10046497,8758622,9253225,9769340)
        AND da.ID in (673803)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
        
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -58,14 +72,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (4185686,4203414,7120762,8674685,9098378,9466590,9536890,9554002,10108264,9689527)
        AND da.ID in (571594)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
            
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -73,14 +87,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (8207094,4162793,4281714,4640567,7031122,7436722,10152370,9840325)
        AND da.ID in (7652)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
        
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -88,14 +102,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (4157458,4219458,4235051,4311118,4473201,4649006,4940711,5015429,5781789,8042648,6830009,6973324,6973760,6971921,6989161,7615761,7658784,8027012,10430883,9093871,9154154,8966519,9543594,9539614)
        AND da.ID in (95139)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
 
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -103,14 +117,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (8211416,4472726,4538241,4546378,8190368,10465192)
        AND da.ID in (11176)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
 
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -118,14 +132,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (4460316,4654561,8438559,7556019,8997845,9500053)
        AND da.ID in (285174)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
 
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -133,14 +147,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (8202816,8202817,4183423,4149619,4191400,4268029,4269582,4249928,4255874,4355348,4473588,4537260,4547551,4707934,4910482,10430049,10430348,6287445,6952398,6964301,6961519,7064674,7063154,7007060,6962626,7211339,7307426,7389360,7524049,7426682,8108687,7949322,8048181,8202387,7819113,8164478,7739846,10509497,10445091,9957034,9599209,10514356,8934555,9164976,9078303,9254745,8973717,9309973,9668302)
        AND da.ID in (4137)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
 
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -148,14 +162,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (5676995,4390727,4390729,8872029,9108242,9713341,9890587)
        AND da.ID in (810071)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
 
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -163,14 +177,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (4351171,4357792,4381918,4410902,8409665,10345888,7224418,7600242,7600243,10532050,8593806,8940914,9223503,9841708)
        AND da.ID in (250198,473966)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
        
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -178,14 +192,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (5572463,6106582,7742390,4196725,4188861,4161255,4161260,4222718,4869211,6228142,9636517,10415383,7432786,7458184,7529243,7549750,7552155,7635970,7635971,8201773,7823558,10478506,10482193,10483314,8940892,9002925,9018813,8966459,9361951,9896014)
        AND da.ID in (3278)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
 
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -193,14 +207,14 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (5597459,6057956,4168143,4192551,4229971,4269740,4747759,4894293,8201960,6799430,6943357,7010764,6943946,7077270,7176008,7308225,7273566,7500427,8096976,7988906,10487443,10451066,8934942,8947000,9134609,9140996,8983933,9794291,9786443,9668586,10241143)
        AND da.ID in (3438)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
 
-INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, JWS) 
+INSERT INTO "CITESEER"."RESULT_MATCH80"(DBLP_ID, CITESEER_ID, DBLP_TITLE, CITESEER_TITLE, TITLE_JWS) 
 SELECT dp.ID AS DBLP_ID,
        cp.ID AS CITESEER_ID,
        dp.TITLE AS DBLP_TITLE,
        cp.TITLE || '.' AS CITESEER_TITLE,
-       UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
+        UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) AS jws       
 FROM   AERCS_TT.PAPER dp, PAPER cp, AERCS_TT.AUTHOR_MEDIA dam, AUTHOR_PAPER cap, AERCS_TT.AUTHOR da, AUTHOR ca
 WHERE  dp.ID = dam.MEDIA_ID
        AND dam.AUTHOR_ID = da.ID
@@ -208,38 +222,27 @@ WHERE  dp.ID = dam.MEDIA_ID
        AND cap.AUTHOR_ID = ca.ID
        AND ca.ID in (4168030,4168038,4174556,4185827,4171078,4254588,4334681,7001177,7471311,10484280,8656245,9134612,9153771,9304346,9807471)
        AND da.ID in (548614,1564810)
-       AND UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
+       AND  UTL_MATCH.jaro_winkler_similarity (        TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(SUBSTR(dp.TITLE, 1, LENGTH(dp.TITLE) - 1)),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:','')), TRIM(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(cp.TITLE),'.: ',''),chr(38) ||'quot;',''),'et al.',''),'in:',''))) > 80;
 
---Create a new table where the similiraty of authors' names will be put
-CREATE TABLE "CITESEER"."RESULT_MATCH80_AUTHOR" 
-   (	"DBLP_ID" NUMBER, 
-	"CITESEER_ID" NUMBER, 
-	"DBLP_TITLE" VARCHAR2(1000 BYTE), 
-	"CITESEER_TITLE" VARCHAR2(4000 BYTE), 
-	"TITLE_JWS" NUMBER, 
-	"CITESEER_AUTHOR" VARCHAR2(4000 BYTE), 
-	"CITESEER_AUTHOR_LEFT" VARCHAR2(4000 BYTE), 
-	"DBLP_AUTHOR" VARCHAR2(4000 BYTE), 
-	"AUTHOR_JWS" NUMBER, 
-	"AUTHOR_JWS_LEFT" NUMBER
-   );
+--Merge DBLP authors' names into RESULT_MATCH80
+MERGE INTO RESULT_MATCH80 A
+USING (
+SELECT max(AM.MEDIA_ID) as DBLP_ID,
+LISTAGG(TRIM(LOWER(SUBSTR(AU.NAME,INSTR (AU.NAME, ' ', -1)))), '') WITHIN GROUP (ORDER BY TRIM(LOWER(SUBSTR(AU.NAME,INSTR (AU.NAME, ' ', -1))))) as DBLP_AUTHOR
+FROM AERCS_TT.AUTHOR_MEDIA AM
+    INNER JOIN AERCS_TT.AUTHOR AU
+               ON AM.AUTHOR_ID = AU.ID 
+WHERE AM.MEDIA_ID IN (SELECT DISTINCT DBLP_ID FROM RESULT_MATCH80)
+GROUP BY AM.MEDIA_ID
+) DA
+ON (A.DBLP_ID = DA.DBLP_ID)
+WHEN MATCHED THEN UPDATE SET A.DBLP_AUTHOR = DA.DBLP_AUTHOR;
 
---Copy recorcs from RESULT_MATCH80 to RESULT_MATCH80_AUTHOR
-INSERT INTO "CITESEER"."RESULT_MATCH80_AUTHOR" 
-SELECT rm.DBLP_ID as DBLP_ID,
-       rm.CITESEER_ID as CITESEER_ID,
-       rm.DBLP_TITLE as DBLP_TITLE,
-       rm.CITESEER_TITLE as CITESEER_TITLE,
-       jws as TITLE_JWS,
-       '/' as CITESEER_AUTHOR,
-       '*' as CITESEER_AUTHOR_LEFT,
-       '-' as DBLP_AUTHOR,
-       0 as AUTHOR_JWS,
-       0 as AUTHOR_JWS_LEFT
-FROM RESULT_MATCH80 rm;
 
---Concatenate authors' names' from Citeseer
-CREATE TABLE RESULT_MATCH80_AUTHOR_CA AS
+--Merge Citeseer authors' names into RESULT_MATCH80
+MERGE INTO RESULT_MATCH80 A
+USING 
+( 
 SELECT max(AP.PAPER_ID) as CITESEER_ID,
 LISTAGG(TRIM(LOWER(SUBSTR(AU.NAME,INSTR (AU.NAME, ' ', -1)))), '') WITHIN GROUP (ORDER BY TRIM(LOWER(SUBSTR(AU.NAME,INSTR (AU.NAME, ' ', -1))))) as CITESEER_AUTHOR,
 LISTAGG(TRIM(LOWER(SUBSTR(AU.NAME,1,INSTR (AU.NAME, ' ', 1)))), '') WITHIN GROUP (ORDER BY TRIM(LOWER(SUBSTR(AU.NAME,1,INSTR (AU.NAME, ' ', 1))))) as CITESEER_AUTHOR_LEFT
@@ -247,47 +250,30 @@ FROM CITESEER.AUTHOR_PAPER AP
     INNER JOIN CITESEER.AUTHOR AU
                ON AP.AUTHOR_ID = AU.ID 
 WHERE AP.PAPER_ID IN (SELECT DISTINCT CITESEER_ID FROM RESULT_MATCH80)
-GROUP BY AP.PAPER_ID;
-
---Concatenate authors' names' from DBLP
-CREATE TABLE RESULT_MATCH80_AUTHOR_DA AS
-SELECT max(AM.MEDIA_ID) as DBLP_ID,
-LISTAGG(TRIM(LOWER(SUBSTR(A.NAME,INSTR (A.NAME, ' ', -1)))), '') WITHIN GROUP (ORDER BY TRIM(LOWER(SUBSTR(A.NAME,INSTR (A.NAME, ' ', -1))))) as DBLP_AUTHOR
-FROM AERCS_TT.AUTHOR_MEDIA AM
-    INNER JOIN AERCS_TT.AUTHOR A
-               ON AM.AUTHOR_ID = A.ID 
-WHERE AM.MEDIA_ID IN (SELECT DISTINCT DBLP_ID FROM RESULT_MATCH80)
-GROUP BY AM.MEDIA_ID;
-
---Merge DBLP authors' names into RESULT_MATCH80_AUTHOR
-MERGE INTO RESULT_MATCH80_AUTHOR A
-USING RESULT_MATCH80_AUTHOR_DA DA
-ON (A.DBLP_ID = DA.DBLP_ID)
-WHEN MATCHED THEN UPDATE SET A.DBLP_AUTHOR = DA.DBLP_AUTHOR;
-
---Merge Citeseer authors' names into RESULT_MATCH80_AUTHOR
-MERGE INTO RESULT_MATCH80_AUTHOR A
-USING RESULT_MATCH80_AUTHOR_CA CA
+GROUP BY AP.PAPER_ID
+)CA
 ON (A.CITESEER_ID = CA.CITESEER_ID)
 WHEN MATCHED THEN UPDATE SET A.CITESEER_AUTHOR = CA.CITESEER_AUTHOR, A.CITESEER_AUTHOR_LEFT = CA.CITESEER_AUTHOR_LEFT;
 
 --Compute the similarity between the DBLP and Citeseer authors' names
-UPDATE RESULT_MATCH80_AUTHOR
-SET AUTHOR_JWS = UTL_MATCH.jaro_winkler_similarity(DBLP_AUTHOR,CITESEER_AUTHOR),
-    AUTHOR_JWS_LEFT = UTL_MATCH.jaro_winkler_similarity(DBLP_AUTHOR,CITESEER_AUTHOR_LEFT);
+UPDATE RESULT_MATCH80
+SET AUTHOR_JWS = UTL_MATCH.jaro_winkler_similarity (DBLP_AUTHOR,CITESEER_AUTHOR),
+    AUTHOR_JWS_LEFT = UTL_MATCH.jaro_winkler_similarity (DBLP_AUTHOR,CITESEER_AUTHOR_LEFT);
+
+
 
 SELECT *
-FROM RESULT_MATCH80_AUTHOR
+FROM RESULT_MATCH80
 WHERE ((AUTHOR_JWS BETWEEN 85 AND 100) OR (AUTHOR_JWS_LEFT BETWEEN 85 AND 100))
       AND TITLE_JWS < 90
 UNION
 SELECT *
-FROM RESULT_MATCH80_AUTHOR
+FROM RESULT_MATCH80
 WHERE (AUTHOR_JWS >= 75 OR AUTHOR_JWS_LEFT >=75 )
       AND TITLE_JWS >= 90
 UNION
 SELECT *
-FROM RESULT_MATCH80_AUTHOR
+FROM RESULT_MATCH80
 WHERE (AUTHOR_JWS >= 60 OR AUTHOR_JWS_LEFT >=60 )
       AND TITLE_JWS >= 95;
 
@@ -299,31 +285,30 @@ DROP TABLE RESULT_MATCH80;
 */
 
 SELECT MAX(DBLP_ID),COUNT(DBLP_ID) 
-FROM RESULT_MATCH80_AUTHOR
+FROM RESULT_MATCH80
 GROUP BY DBLP_ID
-ORDER BY COUNT(DBLP_ID) DESC
+ORDER BY COUNT(DBLP_ID) DESC;
 
 SELECT MAX("COUNT(DBLP_ID)") NUMBER_OF_MATCHES, COUNT("COUNT(DBLP_ID)") NUMBER_OF_PAPERS
 FROM 
 (
 SELECT MAX(DBLP_ID),COUNT(DBLP_ID) 
 FROM (SELECT *
-FROM RESULT_MATCH80_AUTHOR
+FROM RESULT_MATCH80
 WHERE ((AUTHOR_JWS BETWEEN 85 AND 100) OR (AUTHOR_JWS_LEFT BETWEEN 85 AND 100))
       AND TITLE_JWS < 90
 UNION
 SELECT *
-FROM RESULT_MATCH80_AUTHOR
+FROM RESULT_MATCH80
 WHERE (AUTHOR_JWS >= 75 OR AUTHOR_JWS_LEFT >=75 )
       AND TITLE_JWS >= 90
 UNION
 SELECT *
-FROM RESULT_MATCH80_AUTHOR
+FROM RESULT_MATCH80
 WHERE (AUTHOR_JWS >= 60 OR AUTHOR_JWS_LEFT >=60 )
       AND TITLE_JWS >= 95) P
 GROUP BY DBLP_ID
 ORDER BY COUNT(DBLP_ID) DESC
 ) l
 GROUP BY "COUNT(DBLP_ID)"
-ORDER BY COUNT("COUNT(DBLP_ID)") DESC
- 
+ORDER BY COUNT("COUNT(DBLP_ID)") DESC;
